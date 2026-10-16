@@ -1,0 +1,11 @@
+class                    downloaded  removed   kept  other
+cartoon_animal                  100        3     97      0
+plush_animal                    100        3     97      0
+real_animal                     100        5     95      0
+
+reasons
+     5  collage or illustration, not a real animal photo
+     3  real animals/toys, not cartoon illustrations
+     3  real animal, not a plush toy
+
+"other" is images that are in data/raw but neither in data/clean nor removed with `clean.py remove`, for example ones you deleted by hand. Their reasons are not recorded.

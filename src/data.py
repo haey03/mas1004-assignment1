@@ -8,6 +8,9 @@ Run `pytest tests/test_data.py` after you fill them in.
 """
 
 import numpy as np
+from pathlib import Path
+from PIL import Image
+from torchvision.models import ResNet18_Weights
 
 # Files with any other extension should be ignored.
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
@@ -20,6 +23,11 @@ RESIZE = 256                    # the shorter side is resized to this
 CROP = 224                      # then the square in the middle is cut out
 MEAN = (0.485, 0.456, 0.406)    # red, green, blue
 STD = (0.229, 0.224, 0.225)     # red, green, blue
+
+# The torchvision preprocessing ResNet18 was trained with. Using the same
+# transform here guarantees prepare_image matches exactly how the model saw
+# images during training, which the self test on the web page checks.
+_TFMS = ResNet18_Weights.IMAGENET1K_V1.transforms()
 
 
 def prepare_image(image):
@@ -50,7 +58,9 @@ def prepare_image(image):
     The web page does these same six steps in JavaScript. If your version is
     different, the self test badge at the top of your page turns red.
     """
-    raise NotImplementedError("Problem 2: fill in prepare_image")
+    image = image.convert("RGB")
+    x = _TFMS(image)
+    return x.numpy().astype(np.float32)
 
 
 def load_folder(root):
@@ -83,7 +93,40 @@ def load_folder(root):
     Memory: every image becomes 3 x 224 x 224 numbers of 4 bytes, about 0.6 MB.
     750 images is about 450 MB. That fits on Colab and on most laptops.
     """
-    raise NotImplementedError("Problem 2: fill in load_folder")
+    root = Path(root)
+    class_names = sorted(
+        d.name for d in root.iterdir() if d.is_dir()
+    )
+    class_to_idx = {name: index for index, name in enumerate(class_names)}
+
+    X_parts, y_parts, paths = [], [], []
+
+    for class_name in class_names:
+        class_dir = root / class_name
+        files = sorted(
+            p for p in class_dir.iterdir()
+            if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES
+        )
+        label = class_to_idx[class_name]
+        for path in files:
+            try:
+                image = Image.open(path)
+                image.load()  # force decoding so broken files raise here
+                X_parts.append(prepare_image(image))
+            except Exception:
+                # A broken file or a non-image: skip it instead of crashing.
+                continue
+            y_parts.append(label)
+            paths.append(path)
+
+    if X_parts:
+        X = np.stack(X_parts).astype(np.float32)
+        y = np.asarray(y_parts, dtype=np.int64)
+    else:
+        X = np.zeros((0, 3, CROP, CROP), dtype=np.float32)
+        y = np.zeros(0, dtype=np.int64)
+
+    return X, y, class_names, paths
 
 
 def split_train_test(X, y, paths, test_ratio=0.2, seed=0):
@@ -102,4 +145,36 @@ def split_train_test(X, y, paths, test_ratio=0.2, seed=0):
         up with a class that has no test images at all, and then your accuracy
         number means nothing.
     """
-    raise NotImplementedError("Problem 2: fill in split_train_test")
+    rng = np.random.default_rng(seed)
+
+    X_train_parts, y_train_parts, paths_train = [], [], []
+    X_test_parts, y_test_parts, paths_test = [], [], []
+
+    for class_idx in np.unique(y):
+        mask = y == class_idx
+        cls_X = X[mask]
+        cls_y = y[mask]
+        cls_paths = [p for p, m in zip(paths, mask) if m]
+
+        n = len(cls_X)
+        n_test = int(round(n * test_ratio))
+        n_test = max(1, min(n_test, n - 1))  # at least one image on each side
+
+        perm = rng.permutation(n)
+        test_idx = perm[:n_test]
+        train_idx = perm[n_test:]
+
+        X_test_parts.append(cls_X[test_idx])
+        y_test_parts.append(cls_y[test_idx])
+        paths_test.extend(cls_paths[i] for i in test_idx)
+
+        X_train_parts.append(cls_X[train_idx])
+        y_train_parts.append(cls_y[train_idx])
+        paths_train.extend(cls_paths[i] for i in train_idx)
+
+    X_train = np.concatenate(X_train_parts).astype(np.float32)
+    y_train = np.concatenate(y_train_parts).astype(np.int64)
+    X_test = np.concatenate(X_test_parts).astype(np.float32)
+    y_test = np.concatenate(y_test_parts).astype(np.int64)
+
+    return X_train, y_train, paths_train, X_test, y_test, paths_test

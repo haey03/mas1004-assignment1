@@ -1,0 +1,30 @@
+reading /Users/hae0eee/Documents/mas1004-assignment1/data/clean
+289 images, 3 classes, read in 3 s
+  cartoon_animal           97
+  plush_animal             97
+  real_animal              95
+training on 232, testing on 57
+model has 11,178,051 parameters, 1,539 of them will be trained
+epoch 1: train_loss 0.9277 train_acc 0.5603 test_loss 0.7632 test_acc 0.6667
+epoch 2: train_loss 0.6044 train_acc 0.8362 test_loss 0.5508 test_acc 0.8772
+epoch 3: train_loss 0.4669 train_acc 0.8750 test_loss 0.4071 test_acc 0.9298
+epoch 4: train_loss 0.3781 train_acc 0.9440 test_loss 0.3473 test_acc 0.9298
+epoch 5: train_loss 0.2829 train_acc 0.9612 test_loss 0.3277 test_acc 0.9123
+epoch 6: train_loss 0.2998 train_acc 0.9353 test_loss 0.2898 test_acc 0.9298
+epoch 7: train_loss 0.2199 train_acc 0.9612 test_loss 0.2479 test_acc 0.9474
+epoch 8: train_loss 0.1870 train_acc 0.9828 test_loss 0.2575 test_acc 0.9298
+epoch 9: train_loss 0.1557 train_acc 0.9741 test_loss 0.2215 test_acc 0.9474
+epoch 10: train_loss 0.1576 train_acc 0.9828 test_loss 0.2054 test_acc 0.9474
+
+trained in 0.7 minutes
+train accuracy 99.6%
+test  accuracy 94.7%
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/frozen_curves.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/frozen_confusion.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/frozen_worst.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/frozen_model.pt
+
+One line for your experiment table:
+| frozen | ImageNet | last layer | 10 | 0.001 | 1,539 | 99.6% | 94.7% |
+
+To put this model on your web page: python src/export_web.py --tag frozen

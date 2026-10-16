@@ -11,6 +11,8 @@ downloads the ImageNet weights, about 45 MB.
 
 import torch
 import torch.nn as nn
+from torchvision import models
+from torchvision.models import ResNet18_Weights
 
 
 def build_model(num_classes, pretrained=True, freeze=False):
@@ -35,7 +37,15 @@ def build_model(num_classes, pretrained=True, freeze=False):
     Do not put a softmax at the end. The loss function adds it for you, and the
     web page adds it for you.
     """
-    raise NotImplementedError("Problem 3: fill in build_model")
+    weights = ResNet18_Weights.IMAGENET1K_V1 if pretrained else None
+    model = models.resnet18(weights=weights)
+    model.fc = nn.Linear(512, num_classes)
+    if freeze:
+        for param in model.parameters():
+            param.requires_grad = False
+        for param in model.fc.parameters():
+            param.requires_grad = True
+    return model
 
 
 def train(model, X_train, y_train, X_test, y_test,
@@ -78,7 +88,96 @@ def train(model, X_train, y_train, X_test, y_test,
     The model is trained in place. When this function returns, `model` is the
     trained one, and it is left on the device it was trained on.
     """
-    raise NotImplementedError("Problem 3: fill in train")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+
+    X_train_t = torch.from_numpy(X_train)
+    y_train_t = torch.from_numpy(y_train)
+    X_test_t = torch.from_numpy(X_test)
+    y_test_t = torch.from_numpy(y_test)
+
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(
+        filter(lambda p: p.requires_grad, model.parameters()), lr=lr
+    )
+
+    n_train = len(X_train)
+    history = {
+        "train_loss": [],
+        "train_acc": [],
+        "test_loss": [],
+        "test_acc": [],
+    }
+
+    for epoch in range(epochs):
+        # -------- training --------
+        model.train()
+        perm = torch.randperm(n_train)
+        epoch_loss = 0.0
+        n_batches = 0
+        correct = 0
+        total = 0
+
+        for start in range(0, n_train, batch_size):
+            end = min(start + batch_size, n_train)
+            idx = perm[start:end]
+            xb = X_train_t[idx].to(device)
+            yb = y_train_t[idx].to(device)
+
+            optimizer.zero_grad()
+            logits = model(xb)
+            loss = criterion(logits, yb)
+            loss.backward()
+            optimizer.step()
+
+            epoch_loss += loss.item()
+            n_batches += 1
+
+            with torch.no_grad():
+                pred = logits.argmax(dim=1)
+                correct += int((pred == yb).sum())
+                total += yb.size(0)
+
+        train_loss = epoch_loss / n_batches
+        train_acc = correct / total
+
+        # -------- test evaluation --------
+        model.eval()
+        test_loss_sum = 0.0
+        test_batches = 0
+        test_correct = 0
+        test_total = 0
+
+        with torch.no_grad():
+            for start in range(0, len(X_test), batch_size):
+                end = min(start + batch_size, len(X_test))
+                xb = X_test_t[start:end].to(device)
+                yb = y_test_t[start:end].to(device)
+
+                logits = model(xb)
+                loss = criterion(logits, yb)
+                test_loss_sum += loss.item()
+                test_batches += 1
+
+                pred = logits.argmax(dim=1)
+                test_correct += int((pred == yb).sum())
+                test_total += yb.size(0)
+
+        test_loss = test_loss_sum / test_batches
+        test_acc = test_correct / test_total
+
+        history["train_loss"].append(train_loss)
+        history["train_acc"].append(train_acc)
+        history["test_loss"].append(test_loss)
+        history["test_acc"].append(test_acc)
+
+        print(
+            f"epoch {epoch + 1}: "
+            f"train_loss {train_loss:.4f} train_acc {train_acc:.4f} "
+            f"test_loss {test_loss:.4f} test_acc {test_acc:.4f}"
+        )
+
+    return history
 
 
 def count_trainable(model):

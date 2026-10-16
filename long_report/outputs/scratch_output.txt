@@ -1,0 +1,30 @@
+reading /Users/hae0eee/Documents/mas1004-assignment1/data/clean
+289 images, 3 classes, read in 3 s
+  cartoon_animal           97
+  plush_animal             97
+  real_animal              95
+training on 232, testing on 57
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch 1: train_loss 0.8816 train_acc 0.5905 test_loss 0.8065 test_acc 0.5789
+epoch 2: train_loss 0.4961 train_acc 0.8233 test_loss 0.6825 test_acc 0.6491
+epoch 3: train_loss 0.3917 train_acc 0.8534 test_loss 1.2078 test_acc 0.5263
+epoch 4: train_loss 0.2516 train_acc 0.9267 test_loss 0.6138 test_acc 0.8070
+epoch 5: train_loss 0.1097 train_acc 0.9655 test_loss 0.6213 test_acc 0.8246
+epoch 6: train_loss 0.1221 train_acc 0.9741 test_loss 0.7059 test_acc 0.7018
+epoch 7: train_loss 0.0663 train_acc 0.9871 test_loss 0.7340 test_acc 0.7719
+epoch 8: train_loss 0.1535 train_acc 0.9871 test_loss 0.8170 test_acc 0.7544
+epoch 9: train_loss 0.0903 train_acc 0.9612 test_loss 1.0480 test_acc 0.7018
+epoch 10: train_loss 0.0409 train_acc 0.9957 test_loss 1.3071 test_acc 0.6491
+
+trained in 1.5 minutes
+train accuracy 84.9%
+test  accuracy 64.9%
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/scratch_curves.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/scratch_confusion.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/scratch_worst.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/scratch_model.pt
+
+One line for your experiment table:
+| scratch | random | all layers | 10 | 0.0001 | 11,178,051 | 84.9% | 64.9% |
+
+To put this model on your web page: python src/export_web.py --tag scratch

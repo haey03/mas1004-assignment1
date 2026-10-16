@@ -1,0 +1,30 @@
+reading /Users/hae0eee/Documents/mas1004-assignment1/data/clean
+289 images, 3 classes, read in 3 s
+  cartoon_animal           97
+  plush_animal             97
+  real_animal              95
+training on 232, testing on 57
+model has 11,178,051 parameters, 11,178,051 of them will be trained
+epoch 1: train_loss 0.5602 train_acc 0.7414 test_loss 0.2641 test_acc 0.9123
+epoch 2: train_loss 0.0427 train_acc 1.0000 test_loss 0.0828 test_acc 0.9825
+epoch 3: train_loss 0.0152 train_acc 1.0000 test_loss 0.0702 test_acc 0.9649
+epoch 4: train_loss 0.0190 train_acc 0.9957 test_loss 0.0806 test_acc 0.9474
+epoch 5: train_loss 0.0376 train_acc 0.9957 test_loss 0.1007 test_acc 0.9474
+epoch 6: train_loss 0.0125 train_acc 0.9957 test_loss 0.0814 test_acc 0.9298
+epoch 7: train_loss 0.0052 train_acc 1.0000 test_loss 0.0782 test_acc 0.9474
+epoch 8: train_loss 0.0047 train_acc 1.0000 test_loss 0.0842 test_acc 0.9298
+epoch 9: train_loss 0.0061 train_acc 1.0000 test_loss 0.0844 test_acc 0.9298
+epoch 10: train_loss 0.0102 train_acc 1.0000 test_loss 0.1111 test_acc 0.9298
+
+trained in 1.4 minutes
+train accuracy 100.0%
+test  accuracy 93.0%
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/run_curves.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/run_confusion.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/run_worst.png
+wrote /Users/hae0eee/Documents/mas1004-assignment1/results/run_model.pt
+
+One line for your experiment table:
+| run | ImageNet | all layers | 10 | 0.0001 | 11,178,051 | 100.0% | 93.0% |
+
+To put this model on your web page: python src/export_web.py --tag run

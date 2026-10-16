@@ -1,0 +1,40 @@
+MAS1004 Assignment 1, checking your work
+
+Training images  (/Users/hae0eee/Documents/mas1004-assignment1/data/clean)
+--------------------------------------------------------------------------
+  cartoon_animal                  97 images
+  plush_animal                    97 images
+  real_animal                     95 images
+
+Your images from a new source  (/Users/hae0eee/Documents/mas1004-assignment1/data/new_images)
+---------------------------------------------------------------------------------------------
+  PROBLEM  /Users/hae0eee/Documents/mas1004-assignment1/data/new_images does not exist
+
+The same image appearing twice
+------------------------------
+  warning  1 image(s) appear twice inside the same class
+
+The model you exported for the web page
+---------------------------------------
+  ok       3 classes: cartoon_animal, plush_animal, real_animal
+  ok       model.onnx is 44.8 MB, 11,178,051 parameters
+           input [1, 3, 224, 224], prepared as: shorter side 256, centre 224 x 224, mean [0.485, 0.456, 0.406], std [0.229, 0.224, 0.225]
+  warning  docs/model.onnx is not committed. Your published page will not have a model until you commit and push it.
+
+Does the exported model give the answers Python gave?
+-----------------------------------------------------
+  ok       yes, they agree (largest gap 0.0000)
+
+Your images from a new source  (/Users/hae0eee/Documents/mas1004-assignment1/data/new_images)
+---------------------------------------------------------------------------------------------
+  PROBLEM  /Users/hae0eee/Documents/mas1004-assignment1/data/new_images does not exist. Problem 5 asks for at least 5 images per class from a source you are sure is not in your downloads.
+
+Summary
+-------
+  2 thing(s) to fix:
+    - /Users/hae0eee/Documents/mas1004-assignment1/data/new_images does not exist
+    - /Users/hae0eee/Documents/mas1004-assignment1/data/new_images does not exist. Problem 5 asks for at least 5 images per class from a source you are sure is not in your downloads.
+  2 thing(s) worth a sentence in your report:
+    - 1 image(s) appear twice inside the same class
+    - docs/model.onnx is not committed. Your published page will not have a model until you commit and push it.
+
