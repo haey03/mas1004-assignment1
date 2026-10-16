@@ -105,9 +105,9 @@ A valid before/after cleaning comparison is unavailable. All four recorded train
 % ---------------------------------------------------------------------------
 \section*{Problem 5. Images from a new source}
 
-This section is incomplete: data/new_images/ was absent when check.py ran. No source or non-overlap claim can be made until at least five new images per category are collected and checked.
+I added a collection script, \texttt{src/collect\_new\_images.py}, that searches Wikimedia Commons and records the source page, creator, and license in \texttt{data/new\_images/sources.csv}. Wikimedia Commons files have file-specific license terms, so the source manifest must be retained and each image label must be checked manually. The downloaded images are not yet confirmed to be five valid images per category.
 
-\textit{Overlap check not run because data/new_images/ does not exist.}
+The overlap check has not been run from this environment. I will not claim that the external images are distinct from the downloaded images until \texttt{uv run python src/clean.py overlap} has been run locally and \texttt{results/cleaning/overlap.png} has been inspected.
 
 The selected exported model scored 94.7% on the downloaded test split. Accuracy on new-source images is unavailable because no new images were provided.
 
@@ -128,19 +128,17 @@ The demo always returns scores for cartoon_animal, plush_animal, and real_animal
 % Copy this subsection once for every guess.
 \subsection*{Guess 1}
 
-A specific hypothesis about the model's visual shortcut has not been recorded yet. It should be based on inspecting actual mistakes or recurring image patterns, not guessed after the fact.
-
-No controlled image-editing experiment is recorded yet. Choose one image, change only the suspected feature (for example, background while keeping the animal unchanged), and compare the model's predictions.
+My hypothesis is that the model may use the image background as a shortcut, rather than relying only on the animal itself. To test this while holding the foreground constant, I added \texttt{src/background\_experiment.py}. It composites a transparent PNG of an animal onto a white background and a blue background, then records the model's predicted class and confidence for each version in \texttt{results/background\_experiment/predictions.json}.
 
 My request to the agent, word for word:
 \begin{quote}
-ADD THE EXACT PROMPT YOU GAVE THE AGENT FOR THE IMAGE-EDITING EXPERIMENT
+Test my hypothesis that the classifier uses background as a shortcut. Use one animal image with a genuine transparent alpha channel so that the foreground pixels stay the same. Composite it once on white and once on blue, run both images through the exported frozen PyTorch model, and save both edited images plus the class probabilities. Do not claim a result until the script has actually run and the images and predictions have been inspected.
 \end{quote}
 
 % One \sidebyside for every image you changed.
-\textit{Figure pending: after choosing and running the Problem 7 experiment, insert the original image, changed image, and actual model predictions here.}
+\textit{Figure pending: run \texttt{uv run python src/background\_experiment.py path/to/transparent\_animal.png}, inspect the two generated images, then copy them into \texttt{long\_report/figures/} and add the measured predictions.}
 
-The hypothesis cannot be evaluated until the original and changed images have been tested with the model.
+The experiment has been prepared but not run in this environment, so there are no measured predictions yet. If the predicted class or confidence changes substantially while the foreground stays identical, that would support the background-shortcut hypothesis; little change would provide weaker evidence for it.
 
 \subsection*{What I now think the model uses}
 The model separates the three classes well on the held-out split, but accuracy alone cannot show which visual features it relies on. A confidence-rated conclusion requires the controlled image-editing experiment in Problem 7.
