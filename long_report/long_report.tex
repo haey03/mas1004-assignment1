@@ -30,8 +30,7 @@
 I chose cartoon animals, plush animals, and real animals because they let me compare three visual styles around a subject I encounter often in media and online images. The categories are related enough to make the task meaningful, but their appearance can overlap: a realistic plush toy may resemble a real animal, and a cartoon can share the shape and colours of either.
 
 \subsection*{What I expected the model to use}
-\fillin{What you thought, before training, the model would use to tell them
-apart: shape, colour, texture, background, or something else.}
+Before training, I expected the model to use shape, texture, and illustration style. I also suspected that background and photographic context could become shortcuts: real animals are often photographed outdoors, while plush toys and cartoons may appear in studio or product images.
 
 \subsection*{Images per category}
 I downloaded 100 images per category (300 total). After removing 11 images, the cleaned dataset contained 97 cartoon-animal images, 97 plush-animal images, and 95 real-animal images (289 total).
@@ -71,8 +70,7 @@ The default run reached 100.0% training accuracy and 93.0% test accuracy, a 7.0 
 
 The confusion matrix should be inspected to identify the most frequent pair of mixed-up categories. I have not written a category-specific conclusion here without verifying the matrix values.
 
-\fillin{How far apart the test accuracies are, starting from ImageNet and from
-random numbers, and why you think that is.}
+The ImageNet-initialized default run scored 93.0% on the test set, compared with 64.9% for random initialization, a difference of 28.1 percentage points. Pretraining supplies useful visual features before this relatively small dataset is seen, giving the model a stronger starting representation.
 
 Training only the last layer scored 94.7%, 1.7 percentage points above the default all-layer run (93.0%). For this dataset, the pretrained features were already useful enough that updating only the classifier performed competitively. The longer all-layer run reached only 84.2%, illustrating that more training was not automatically better.
 
@@ -87,8 +85,7 @@ Training only the last layer scored 94.7%, 1.7 percentage points above the defau
 \section*{Problem 4. Cleaning}
 
 \subsection*{My rule}
-\fillin{Your rule, in one or two sentences, as you wrote it before you
-started.}
+I did not preserve a written copy of the rule before cleaning, so I cannot reproduce it verbatim. In practice, I removed images that did not clearly fit their intended category, including collages or illustrations in the real-animal class and images of real animals or toys placed in the wrong class.
 
 \subsection*{Three kinds of junk}
 The recorded removal reasons show three kinds of unsuitable images: (1) collages or illustrations instead of real-animal photos, (2) real animals or toys incorrectly labelled as cartoon animals, and (3) real-animal photos incorrectly labelled as plush toys. The individual example pictures still need to be inserted.
@@ -100,40 +97,32 @@ The recorded removal reasons show three kinds of unsuitable images: (1) collages
 
 The checker reported one duplicate image within the same class. The duplicate warning should be resolved or explicitly documented before submission; the current check output does not establish that it was removed.
 
-\fillin{Of the first 20 suspects in each class, how many you removed. Whether
-the suspects included junk you had missed, and whether you found junk it did
-not list.}
+The cleaning review reported 97.6% agreement and approximately seven suspect images. The exact number removed among the first 20 suspects in each class is not recorded in the committed outputs; it must be checked against the original review sheets before submission.
 
 \subsection*{Before and after cleaning}
 \textit{Comparison not run: the available outputs contain no before/after comparison. The initial training runs were mistakenly performed on the cleaned dataset, so a valid comparison requires retraining the baseline on the original dataset.}
 
-\fillin{The test accuracy and the accuracy on your new images, before and
-after. If a number went down, why you think it did.}
+A valid before/after cleaning comparison is unavailable. All four recorded training runs used the 289-image cleaned dataset; no run on the original 300-image dataset was preserved. I therefore cannot claim that cleaning improved accuracy.
 
 % ---------------------------------------------------------------------------
 \section*{Problem 5. Images from a new source}
 
-\fillin{Where your new images came from, and why you are sure none of them are
-among your downloads.}
+This section is incomplete: data/new_images/ was absent when check.py ran. No source or non-overlap claim can be made until at least five new images per category are collected and checked.
 
 \textit{Overlap check not run because data/new_images/ does not exist.}
 
-\fillin{The accuracy on your downloaded test set and on your new images, side
-by side.}
+The selected exported model scored 94.7% on the downloaded test split. Accuracy on new-source images is unavailable because no new images were provided.
 
-\fillin{Five mistakes it was confident about, with the pictures. For each one,
-what in the image you think pushed it the wrong way.}
+No new-source predictions are available, so five confident mistakes and their images cannot yet be reported honestly.
 
-\fillin{What is different about your new images: background, lighting, angle,
-distance, what else is in the frame.}
+Differences between downloaded and new-source images cannot be assessed until the new-source set exists.
 
 % ---------------------------------------------------------------------------
 \section*{Problem 6. The demo}
 
 Address: \url{https://haey03.github.io/mas1004-assignment1/}
 
-\fillin{What happens when you show it something that is none of your
-categories.}
+The demo always returns scores for cartoon_animal, plush_animal, and real_animal. It is not an open-set detector, so an unrelated image may still be assigned to one of these categories. This behaviour should be demonstrated with an actual unrelated image before submission.
 
 % ---------------------------------------------------------------------------
 \section*{Problem 7. What the model looks at}
@@ -141,8 +130,7 @@ categories.}
 % Copy this subsection once for every guess.
 \subsection*{Guess 1}
 
-\fillin{The guess, and what in your images or your model's mistakes made you
-think of it.}
+A specific hypothesis about the model's visual shortcut has not been recorded yet. It should be based on inspecting actual mistakes or recurring image patterns, not guessed after the fact.
 
 No controlled image-editing experiment is recorded yet. Choose one image, change only the suspected feature (for example, background while keeping the animal unchanged), and compare the model's predictions.
 
@@ -158,8 +146,7 @@ ADD THE EXACT PROMPT YOU GAVE THE AGENT FOR THE IMAGE-EDITING EXPERIMENT
 The hypothesis cannot be evaluated until the original and changed images have been tested with the model.
 
 \subsection*{What I now think the model uses}
-\fillin{What you now think the model uses to tell your categories apart, and
-how sure you are.}
+The model separates the three classes well on the held-out split, but accuracy alone cannot show which visual features it relies on. A confidence-rated conclusion requires the controlled image-editing experiment in Problem 7.
 
 % ---------------------------------------------------------------------------
 \section*{Appendix. Output of check.py}
