@@ -58,19 +58,66 @@ longer & ImageNet & all layers & 20 & 0.0003 & 11,178,051 & 97.4\% & 84.2\% \\
 \end{tabular}
 \end{center}
 
-\picturefile{figures/run_curves.png}
+\subsection*{Training curves}
+The following plots show the training and test behaviour for all four settings.
 
-Training loss decreased in all four runs, but the test results did not improve steadily. In the longer run, test accuracy fluctuated and ended at 84.2%, below the 93.0% of the default run. More epochs and a larger learning rate therefore did not guarantee better generalization.
+\begin{center}
+\picturefile[0.48\linewidth]{figures/run_curves.png}\hfill
+\picturefile[0.48\linewidth]{figures/scratch_curves.png}
+
+\small Default pretrained run (left) and random initialization (right).
+\end{center}
+
+\begin{center}
+\picturefile[0.48\linewidth]{figures/frozen_curves.png}\hfill
+\picturefile[0.48\linewidth]{figures/longer_curves.png}
+
+\small Frozen backbone (left) and longer training (right).
+\end{center}
+
+Training loss decreased in all four runs, but the test results did not improve steadily. In the longer run, test accuracy fluctuated and ended at 84.2\%, below the 93.0\% of the default run. More epochs and a larger learning rate therefore did not guarantee better generalization.
 
 The default run reached 100.0% training accuracy and 93.0% test accuracy, a 7.0 percentage-point gap. The frozen run reached 99.6% training and 94.7% test accuracy, a 4.9-point gap. These gaps suggest some overfitting, while the very high training accuracy shows that the models learned the training examples much more easily than unseen test images.
 
-\begin{center}\picturefile[0.5\linewidth]{figures/run_confusion.png}\end{center}
+\subsection*{Confusion matrices}
+These matrices make it possible to compare which classes are confused in each run. Rows and columns should be read using the class labels in the plot.
 
-The confusion matrix should be inspected to identify the most frequent pair of mixed-up categories. I have not written a category-specific conclusion here without verifying the matrix values.
+\begin{center}
+\picturefile[0.48\linewidth]{figures/run_confusion.png}\hfill
+\picturefile[0.48\linewidth]{figures/scratch_confusion.png}
+
+\small Default pretrained run (left) and random initialization (right).
+\end{center}
+
+\begin{center}
+\picturefile[0.48\linewidth]{figures/frozen_confusion.png}\hfill
+\picturefile[0.48\linewidth]{figures/longer_confusion.png}
+
+\small Frozen backbone (left) and longer training (right).
+\end{center}
+
+The matrices are included for direct comparison. I have not named a single most-confused pair here without verifying the cell counts.
 
 The ImageNet-initialized default run scored 93.0% on the test set, compared with 64.9% for random initialization, a difference of 28.1 percentage points. Pretraining supplies useful visual features before this relatively small dataset is seen, giving the model a stronger starting representation.
 
 Training only the last layer scored 94.7%, 1.7 percentage points above the default all-layer run (93.0%). For this dataset, the pretrained features were already useful enough that updating only the classifier performed competitively. The longer all-layer run reached only 84.2%, illustrating that more training was not automatically better.
+
+\subsection*{Examples of difficult predictions}
+The following saved examples show predictions that the model found difficult. They are included as qualitative evidence; they should not be treated as a replacement for the test-accuracy measurements.
+
+\begin{center}
+\picturefile[0.48\linewidth]{figures/run_worst.png}\hfill
+\picturefile[0.48\linewidth]{figures/scratch_worst.png}
+
+\small Default pretrained run (left) and random initialization (right).
+\end{center}
+
+\begin{center}
+\picturefile[0.48\linewidth]{figures/frozen_worst.png}\hfill
+\picturefile[0.48\linewidth]{figures/longer_worst.png}
+
+\small Frozen backbone (left) and longer training (right).
+\end{center}
 
 \subsection*{Output of the runs}
 \outputfile{outputs/run_output.txt}
