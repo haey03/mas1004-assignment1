@@ -17,8 +17,8 @@
 \usepackage{mas1004}
 
 \reporttitle{Assignment 1: Long report}
-\studentname{Your name}
-\studentid{Your student ID}
+\studentname{Hai Anh}
+\studentid{ADD YOUR STUDENT ID}
 
 \begin{document}
 \makeheader
@@ -27,14 +27,14 @@
 \section*{Problem 1. Categories and images}
 
 \subsection*{Why these categories}
-\fillin{Why these categories, and why you care about them.}
+I chose cartoon animals, plush animals, and real animals because they let me compare three visual styles around a subject I encounter often in media and online images. The categories are related enough to make the task meaningful, but their appearance can overlap: a realistic plush toy may resemble a real animal, and a cartoon can share the shape and colours of either.
 
 \subsection*{What I expected the model to use}
 \fillin{What you thought, before training, the model would use to tell them
 apart: shape, colour, texture, background, or something else.}
 
 \subsection*{Images per category}
-\fillin{How many images you got for each category.}
+I downloaded 100 images per category (300 total). After removing 11 images, the cleaned dataset contained 97 cartoon-animal images, 97 plush-animal images, and 95 real-animal images (289 total).
 
 % ---------------------------------------------------------------------------
 \section*{Problem 2. Preparing an image}
@@ -53,25 +53,28 @@ thing you care about.}
 \toprule
 tag & start & trained & epochs & lr & trainable parameters & train acc. & test acc. \\
 \midrule
-\multicolumn{8}{l}{\fillin{one row per run, as run.py printed it}} \\
+run & ImageNet & all layers & 10 & 0.0001 & 11,178,051 & 100.0\% & 93.0\% \\
+scratch & random & all layers & 10 & 0.0001 & 11,178,051 & 84.9\% & 64.9\% \\
+frozen & ImageNet & last layer & 10 & 0.001 & 1,539 & 99.6\% & 94.7\% \\
+longer & ImageNet & all layers & 20 & 0.0003 & 11,178,051 & 97.4\% & 84.2\% \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \picturefile{figures/run_curves.png}
 
-\fillin{Did the loss go down? Did it keep going down, or flatten out?}
+Training loss decreased in all four runs, but the test results did not improve steadily. In the longer run, test accuracy fluctuated and ended at 84.2%, below the 93.0% of the default run. More epochs and a larger learning rate therefore did not guarantee better generalization.
 
-\fillin{The gap between train and test accuracy, and what it means.}
+The default run reached 100.0% training accuracy and 93.0% test accuracy, a 7.0 percentage-point gap. The frozen run reached 99.6% training and 94.7% test accuracy, a 4.9-point gap. These gaps suggest some overfitting, while the very high training accuracy shows that the models learned the training examples much more easily than unseen test images.
 
 \begin{center}\picturefile[0.5\linewidth]{figures/run_confusion.png}\end{center}
 
-\fillin{Which two categories it mixes up most, and whether that surprised you.}
+The confusion matrix should be inspected to identify the most frequent pair of mixed-up categories. I have not written a category-specific conclusion here without verifying the matrix values.
 
 \fillin{How far apart the test accuracies are, starting from ImageNet and from
 random numbers, and why you think that is.}
 
-\fillin{How close training only the last layer gets to training all of them.}
+Training only the last layer scored 94.7%, 1.7 percentage points above the default all-layer run (93.0%). For this dataset, the pretrained features were already useful enough that updating only the classifier performed competitively. The longer all-layer run reached only 84.2%, illustrating that more training was not automatically better.
 
 \subsection*{Output of the runs}
 \outputfile{outputs/run_output.txt}
@@ -88,21 +91,21 @@ random numbers, and why you think that is.}
 started.}
 
 \subsection*{Three kinds of junk}
-\fillin{Three kinds of junk, with one picture of each.}
+The recorded removal reasons show three kinds of unsuitable images: (1) collages or illustrations instead of real-animal photos, (2) real animals or toys incorrectly labelled as cartoon animals, and (3) real-animal photos incorrectly labelled as plush toys. The individual example pictures still need to be inserted.
 
 % For example: \picturefile[0.3\linewidth]{figures/junk_1.jpg}
 
 \subsection*{What I removed}
 \outputfile{outputs/clean_count.txt}
 
-\fillin{How many near copies it found, and what you did with them.}
+The checker reported one duplicate image within the same class. The duplicate warning should be resolved or explicitly documented before submission; the current check output does not establish that it was removed.
 
 \fillin{Of the first 20 suspects in each class, how many you removed. Whether
 the suspects included junk you had missed, and whether you found junk it did
 not list.}
 
 \subsection*{Before and after cleaning}
-\outputfile{outputs/compare.txt}
+\textit{Comparison not run: the available outputs contain no before/after comparison. The initial training runs were mistakenly performed on the cleaned dataset, so a valid comparison requires retraining the baseline on the original dataset.}
 
 \fillin{The test accuracy and the accuracy on your new images, before and
 after. If a number went down, why you think it did.}
@@ -113,7 +116,7 @@ after. If a number went down, why you think it did.}
 \fillin{Where your new images came from, and why you are sure none of them are
 among your downloads.}
 
-\outputfile{outputs/overlap.txt}
+\textit{Overlap check not run because data/new_images/ does not exist.}
 
 \fillin{The accuracy on your downloaded test set and on your new images, side
 by side.}
@@ -127,7 +130,7 @@ distance, what else is in the frame.}
 % ---------------------------------------------------------------------------
 \section*{Problem 6. The demo}
 
-Address: \fillin{your GitHub Pages address}
+Address: \url{https://haey03.github.io/mas1004-assignment1/}
 
 \fillin{What happens when you show it something that is none of your
 categories.}
@@ -141,18 +144,18 @@ categories.}
 \fillin{The guess, and what in your images or your model's mistakes made you
 think of it.}
 
-\fillin{The change you chose, and why it tests the guess.}
+No controlled image-editing experiment is recorded yet. Choose one image, change only the suspected feature (for example, background while keeping the animal unchanged), and compare the model's predictions.
 
 My request to the agent, word for word:
 \begin{quote}
-\fillin{the request}
+ADD THE EXACT PROMPT YOU GAVE THE AGENT FOR THE IMAGE-EDITING EXPERIMENT
 \end{quote}
 
 % One \sidebyside for every image you changed.
 \sidebyside{figures/guess1_original_1.jpg}{\fillin{original: the model's answer}}
            {figures/guess1_changed_1.jpg}{\fillin{changed: the model's answer}}
 
-\fillin{What the results say about the guess.}
+The hypothesis cannot be evaluated until the original and changed images have been tested with the model.
 
 \subsection*{What I now think the model uses}
 \fillin{What you now think the model uses to tell your categories apart, and
