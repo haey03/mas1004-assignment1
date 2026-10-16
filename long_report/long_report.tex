@@ -18,7 +18,7 @@
 
 \reporttitle{Assignment 1: Long report}
 \studentname{Hai Anh}
-\studentid{ADD YOUR STUDENT ID}
+\studentid{20231165}
 
 \begin{document}
 \makeheader
@@ -41,8 +41,7 @@ I downloaded 100 images per category (300 total). After removing 11 images, the 
 \sidebyside{figures/prepare_original.jpg}{\fillin{the image as downloaded}}
            {figures/prepare_result.png}{\fillin{what prepare\_image made of it}}
 
-\fillin{What was cut off, and an image where the crop cut off part of the
-thing you care about.}
+The preprocessing resizes the shorter side to 256 pixels and takes a centred 224 × 224 crop. This can cut off important content near an image edge, such as ears, tails, limbs, or part of a toy. The original and cropped example images still need to be inserted from an actual image.
 
 % ---------------------------------------------------------------------------
 \section*{Problem 3. First training runs}
